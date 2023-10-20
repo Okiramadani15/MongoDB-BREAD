@@ -3,20 +3,25 @@ const { objectId, ObjectId } = require("mongodb");
 var router = express.Router();
 
 module.exports = function (db) {
-  const User = db.collection("users");
+  const todo = db.collection("todos");
   router.get("/", async function (req, res, next) {
     try {
-      const { name,phone } = req.query;
+      const { title,deadline,startDate, endDate,complete } = req.query;
       const params = {};
-      if (name) {
-        params["name"] = new RegExp(name, "i");
+      if (title) {
+        params["title"] = new RegExp(title, "i");
       }
-      if (phone) {
-        params["phone"] = new RegExp(phone, "i") 
+      if (startDate && endDate ) {
+        params["deadline"] = {deadline:
+        { 
+          $gte: new Date(startDate),
+          $lte: new Date(endDate) 
+        }}} 
+      if (complete) {
+        params["complete"] = JSON.parse(complete) 
       }
-      console.log(params)
-      const users = await User.find({}).toArray();
-      res.json(users);
+      const todos = await todo.find(params).toArray();
+      res.json(todos);
     } catch (err) {
       res.status(500).json({ err });
       

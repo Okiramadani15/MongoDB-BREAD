@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BREAD</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/fontawesome/css/all.css"/>
+  </head>
+
+  <body>
+    <div class="body2">
+      <div class="h2" >
+        <h2>postgreSQL BREAD (Browse,Read,Edit,Add,Delete)and pagination</h2>
+      </div>
+      <!-- search -->
+      <div>
+        <form action="" method="get" class="add-container">
+          <input type="hidden" name="page" value="1">
+          <input type="hidden" name="sort" value="desc">
+          <input type="hidden" name="typeSort" value="id">
+          <div class="row">
+            <div class="col-20">
+              <label for="name">Title</label>
+            </div>
+            <div class="col-80">
+              <input type="text" class="add-box" name="title" placeholder="insert your title" value="<%= query.title %>" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-20">
+              <label for="birthdate">Deadline</label>
+            </div>
+            <div class="col-80">
+              <input type="date" class="add-box" name="startDate" placeholder="dd/mm/yyyy" value="<%= query.startDate %>" />
+              s.d
+              <input type="date" class="add-box" name="endDate" placeholder="dd/mm/yyyy" value="<%= query.endDate %>" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-20">
+              <label for="married">Complete</label>
+            </div>
+            <div class="col-80">
+              <select name="complete" id="complete">
+                <option disabled>-select complete-</option>
+                <option value="true" selected>Done</option>
+                <option value="false">No Yet</option>
+              </select>
+              <select name="complete" id="complete">
+                <option disabled>-select complete-</option>
+                <option value="true">Done</option>
+                <option value="false" selected>Not Yet</option>
+              </select>
+              <select name="complete" id="complete  ">
+                <option disabled selected>-select complete-</option>
+                <option value="true">Done</option>
+                <option value="false">Not Yet</option>
+              </select>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-20">
+            <legend>Operation</legend>
+        </div>
+          <div class="col-80">
+            <% if(query.type_search=='OR' ) { %> 
+              <input type="radio" id="OR" name="type_search" value="OR" checked />OR
+            <input type="radio" id="AND" name="type_search" value="AND" />AND
+             <% }else if(query.type_search=='AND' ) { %> 
+              <input type="radio" id="OR" name="type_search" value="OR" />OR
+            <input type="radio" id="AND" name="type_search" value="AND" checked />AND
+             <% }else { %> 
+              <input type="radio" id="OR" name="type_search" value="OR" checked />OR 
+              <input type="radio" id="AND" name="type_search" value="AND" />AND 
+              <% } %>
+          </div>
+        </div>
+        <br>
+        <br>    
+          <!--submit button-->
+          <div>
+            <button type="submit" class="add-search"><img src="/images/sch.png"></button>
+            <a  class="add-reset" href="/todos"><img src="/images/re.png"></a>
+          </div>
+        </form>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Title     <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+            <th>Complete  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=complete`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'complete' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+            <th>Deadline  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=deadline`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'deadline' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
+         
+            </th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.forEach((daftar, index)=>{ %>
+            <% if (new Date(`${daftar.deadline}`).getTime()< new Date().getTime() && daftar.complete == false){ %>
+          <tr>
+            <td style="background-color: #ff564a;">
+              <%= index + offset + 1 %>
+            </td>
+
+            <td style="background-color: #ff564a;">
+              <%= daftar.title %>
+            </td>
+            <td style="background-color: #ff564a;">
+              <%= daftar.complete ? 'Done' : 'Not yet' %>
+            </td>
+            <td style="background-color: #ff564a;">
+              <%= moment(daftar.deadline).format('MMMM Do YYYY, h:mm:ss a') %>
+            </td>
+            <td style="background-color: #ff564a;">
+              <a  href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
+              <button data-bs-toggle="modal" data-bs-target="#exampleModal<%= daftar.id %>" class="btn-delete"><img src="/images/dlet.png"></button>
+              </td> 
+            </tr>
+            <div class="modal fade" id="exampleModal<%= daftar.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                   
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <a  href="/todos/delete/<%= daftar.id %>" class="btn btn-warning">Yes</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+          </tr>
+            <tr>
+              <td><%= index + offset + 1 %></td>
+              <td><%= daftar.title %></td>
+              <td><%= daftar.complete ? 'Done' : 'Not yet' %></td>
+              <td><%= moment(daftar.deadline).format('MMMM Do YYYY, h:mm:ss a') %></td>
+              <td><a href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
+                <button data-bs-toggle="modal" data-bs-target="#exampleModal<%= daftar.id %>" class="btn-delete"><img src="/images/dlet.png"></button>
+              </td> 
+            </tr>
+            <div class="modal fade" id="exampleModal<%= daftar.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                   Apakah kamu yakin menghapus data "<%= daftar.title %>" ?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <a  href="/todos/delete/<%= daftar.id %>" class="btn btn-warning">Yes</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <% } %> 
+          <% }) %>
+        </tbody>
+      </table>
+  <div class="bawah">
+      <a href="/todos/add/<%= usersid %>" class="btn btn-primary"><img src="/images/ad.png"></a> 
+
+      <div class="pagination">
+        <% if (page > 1){%>
+        <a class="page-link" href="/todos<%=url.includes('page=')?  url.replace(`page=${page}`, `page=${Number(page) -1}`):`?page=${Number(page) -1}`%>">&laquo;</a>
+        <% } %>
+
+      <% for(let i=1; i <=pages; i++){%>
+      <a class="page-link<%= page == i ? ' active': ''%>" href="/todos<%=url.includes('page=')? url.replace(`page=${page}`, `page=${i}`):`?page=${i}` %>"> <%= i %> </a>
+      <% } %>
+
+      <% if (page < pages) {%>
+      <a class="page-link" href="/todos<%=url.includes('page=')?  url.replace(`page=${page}`, `page=${Number(page) +1}`):`?page=${Number(page) +1}`%>">&raquo;</a>
+      <% } %>
+      
+    <%- include('../partials/footer.ejs')%>
+      </div>
+  </div>
+  </body>
+</html>

@@ -4,10 +4,11 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const { MongoClient } = require("mongodb");
 
-async function main() {
-  const url = "mongodb://127.0.0.1:27017";
+const url = "mongodb://127.0.0.1:27017";
   const client = new MongoClient(url);
   const dbName = "cobadb";
+
+async function main() {
   await client.connect();
   console.log("Connected successfully to server");
   const db = client.db(dbName);
@@ -18,8 +19,15 @@ main()
   .then((db) => {
     var indexRouter = require("./routes/index")(db);
     var usersRouter = require("./routes/users")(db);
+    var usersRouter = require("./routes/todos")(db);
+
 
     var app = express();
+
+      // view engine setup
+      app.set('views', path.join(__dirname, 'views'));
+      app.set('view engine', 'ejs');
+  
 
     app.use(logger("dev"));
     app.use(express.json());
@@ -29,6 +37,8 @@ main()
 
     app.use("/", indexRouter);
     app.use("/api/users", usersRouter);
+    app.use("/api/todos", usersRouter);
+
 
     var debug = require("debug")("ch22:server");
     var http = require("http");
