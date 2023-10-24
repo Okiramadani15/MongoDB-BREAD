@@ -42,7 +42,8 @@ module.exports = function (db) {
       const { name, phone } = req.body
       const users = await User.insertOne({ name, phone })
       res.status(201).json(users)
-    } catch (err) {
+    } catch (err){
+      console.log(err)
       res.status(500).json({ err })
     }
   });

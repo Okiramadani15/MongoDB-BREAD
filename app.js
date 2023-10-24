@@ -19,7 +19,7 @@ main()
   .then((db) => {
     var indexRouter = require("./routes/index")(db);
     var usersRouter = require("./routes/users")(db);
-    var usersRouter = require("./routes/todos")(db);
+    var todosRouter = require("./routes/todos")(db);
 
 
     var app = express();
@@ -37,7 +37,7 @@ main()
 
     app.use("/", indexRouter);
     app.use("/api/users", usersRouter);
-    app.use("/api/todos", usersRouter);
+    app.use("/api/todos", todosRouter);
 
 
     var debug = require("debug")("ch22:server");
