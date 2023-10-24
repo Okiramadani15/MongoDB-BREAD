@@ -1,8 +1,165 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
 }
 
-a {
-  color: #00B7FF;
+table {
+  width: 100%;
+}
+
+th.number{
+  text-align: center;
+}
+
+.h1-wrapper {
+  text-align: center;
+  padding: 10px;
+  margin: 0px;
+  background-color: whitesmoke;
+  box-shadow: 0px 0px 5px rgb(167, 167, 167);
+}
+
+.container-list {
+  background-color: white;
+  width: 80%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 5px rgb(167, 167, 167);
+}
+
+.h1-title {
+  margin: 10px;
+}
+
+.table-list {
+  background-color: white;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+th.title {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 50px;
+}
+
+.sort-wrapper {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: baseline;
+  height: 100%;
+}
+
+.sort {
+  width: 100%;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sort-button {
+  height: 7px;
+  color: black;
+}
+
+th.deadline {
+  padding-left: 100px;
+  justify-content: end;
+}
+
+th.action {
+  margin-left: 80px;
+}
+
+th.action {
+  width: 25%;
+}
+
+.pagination {
+  display: inline-block;
+  margin: 0px;
+  height: 40px
+}
+
+.search {
+  background-color: white;
+  display: flex;
+  height: 60px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.show-data {
+  padding: 10px;
+  margin: 0px;
+  height: 60px;
+}
+
+.search-input {
+  margin-right: 10px;
+  width: 78%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50%;
+}
+
+.input-search {
+  width: 80%;
+  height: 100%;
+  padding-left: 10px;
+  border: 5px black;
+  border-radius: 5px;
+  color: black;
+  box-shadow: 0px 0px 5px rgb(167, 167, 167);
+}
+
+.container-button {
+  width: 95%;
+  display: inline-flex;
+  justify-content: end;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 70%;
+}
+
+.form-add {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.input-add {
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.id{
+  text-align: center;
+}
+
+.tname {
+  padding-left: 70px!important;
+}
+
+.bpage {
+  display: inline-flex;
+  margin-left: 10px;
 }

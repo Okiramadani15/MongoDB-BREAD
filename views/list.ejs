@@ -1,193 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BREAD</title>
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-    <link rel="stylesheet" href="/fontawesome/css/all.css"/>
-  </head>
-
-  <body>
-    <div class="body2">
-      <div class="h2" >
-        <h2>postgreSQL BREAD (Browse,Read,Edit,Add,Delete)and pagination</h2>
-      </div>
-      <!-- search -->
-      <div>
-        <form action="" method="get" class="add-container">
-          <input type="hidden" name="page" value="1">
-          <input type="hidden" name="sort" value="desc">
-          <input type="hidden" name="typeSort" value="id">
-          <div class="row">
-            <div class="col-20">
-              <label for="name">Title</label>
-            </div>
-            <div class="col-80">
-              <input type="text" class="add-box" name="title" placeholder="insert your title" value="<%= query.title %>" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-20">
-              <label for="birthdate">Deadline</label>
-            </div>
-            <div class="col-80">
-              <input type="date" class="add-box" name="startDate" placeholder="dd/mm/yyyy" value="<%= query.startDate %>" />
-              s.d
-              <input type="date" class="add-box" name="endDate" placeholder="dd/mm/yyyy" value="<%= query.endDate %>" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-20">
-              <label for="married">Complete</label>
-            </div>
-            <div class="col-80">
-              <select name="complete" id="complete">
-                <option disabled>-select complete-</option>
-                <option value="true" selected>Done</option>
-                <option value="false">No Yet</option>
-              </select>
-              <select name="complete" id="complete">
-                <option disabled>-select complete-</option>
-                <option value="true">Done</option>
-                <option value="false" selected>Not Yet</option>
-              </select>
-              <select name="complete" id="complete  ">
-                <option disabled selected>-select complete-</option>
-                <option value="true">Done</option>
-                <option value="false">Not Yet</option>
-              </select>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-20">
-            <legend>Operation</legend>
-        </div>
-          <div class="col-80">
-            <% if(query.type_search=='OR' ) { %> 
-              <input type="radio" id="OR" name="type_search" value="OR" checked />OR
-            <input type="radio" id="AND" name="type_search" value="AND" />AND
-             <% }else if(query.type_search=='AND' ) { %> 
-              <input type="radio" id="OR" name="type_search" value="OR" />OR
-            <input type="radio" id="AND" name="type_search" value="AND" checked />AND
-             <% }else { %> 
-              <input type="radio" id="OR" name="type_search" value="OR" checked />OR 
-              <input type="radio" id="AND" name="type_search" value="AND" />AND 
-              <% } %>
-          </div>
-        </div>
-        <br>
-        <br>    
-          <!--submit button-->
-          <div>
-            <button type="submit" class="add-search"><img src="/images/sch.png"></button>
-            <a  class="add-reset" href="/todos"><img src="/images/re.png"></a>
-          </div>
+<%- include('./partials/headUser') %>
+  <div class="container-list">
+    <div class="h1-wrapper">
+      <h1 class="h1-title">MongoDB_BREADS(Browse, Read, Edit, Add, Delete, Sort)</h1>
+    </div>
+    <div class="search">
+      <div class="show-data">
+        <form class="input-group mb-1">
+          <span class="input-group-text">Show</span>
+          <select style="border-radius: 5px;" type="text" class="form-control"
+            aria-label="Amount (to the nearest dollar)" onchange="setLimit()" id="limit">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="0">all</option>
+          </select>
+          <span class="input-group-text">entries</span>
         </form>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Title     <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=title`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'title' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
-            <th>Complete  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=complete`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'complete' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
-            <th>Deadline  <a style="color: black;" href="/todos<%= url.replace(`typeSort=${typeSort}`, `typeSort=deadline`).replace(`sort=${sort}`, `sort=${sort == 'desc' ? 'asc' : 'desc'}`) %>"><i class="fa-solid fa-<%= typeSort == 'deadline' ? sort=='desc' ? 'sort-down' : 'sort-up' : 'sort' %>"></i></a></th>
-         
-            </th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% data.forEach((daftar, index)=>{ %>
-            <% if (new Date(`${daftar.deadline}`).getTime()< new Date().getTime() && daftar.complete == false){ %>
-          <tr>
-            <td style="background-color: #ff564a;">
-              <%= index + offset + 1 %>
-            </td>
 
-            <td style="background-color: #ff564a;">
-              <%= daftar.title %>
-            </td>
-            <td style="background-color: #ff564a;">
-              <%= daftar.complete ? 'Done' : 'Not yet' %>
-            </td>
-            <td style="background-color: #ff564a;">
-              <%= moment(daftar.deadline).format('MMMM Do YYYY, h:mm:ss a') %>
-            </td>
-            <td style="background-color: #ff564a;">
-              <a  href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
-              <button data-bs-toggle="modal" data-bs-target="#exampleModal<%= daftar.id %>" class="btn-delete"><img src="/images/dlet.png"></button>
-              </td> 
-            </tr>
-            <div class="modal fade" id="exampleModal<%= daftar.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                   
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <a  href="/todos/delete/<%= daftar.id %>" class="btn btn-warning">Yes</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-          </tr>
+      </div>
+      <div class="search-input">
+        <input id="input-search" class="input-search" oninput="find()" type="text">
+        <div class="button-search">&nbsp;
+          <button onclick="find()" type="button" class="btn btn-outline-secondary"><i
+              class="fa-solid fa-magnifying-glass" style="color: #77767b;"></i></button>
+          <button onclick="reset()" type="button" class="btn btn-outline-warning"><i class="fa-solid fa-rotate"
+              style="color: #f6d32d;"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="container-form">
+      <!-- table -->
+      <div class="table-list">
+        <table id="users-table" class="table table-striped">
+          <thead>
             <tr>
-              <td><%= index + offset + 1 %></td>
-              <td><%= daftar.title %></td>
-              <td><%= daftar.complete ? 'Done' : 'Not yet' %></td>
-              <td><%= moment(daftar.deadline).format('MMMM Do YYYY, h:mm:ss a') %></td>
-              <td><a href="/todos/edit/<%= daftar.id %>" class="btn-update"><img src="/images/updt.png"></a>
-                <button data-bs-toggle="modal" data-bs-target="#exampleModal<%= daftar.id %>" class="btn-delete"><img src="/images/dlet.png"></button>
-              </td> 
+              <th class="id">No.</th>
+              <!-- .title, .sort-wrapper. .sort, sort-button,  -->
+              <th class="title" id="btn-name">
+                <button type="button" class="btn p-0" onclick="sortNameAsc('name')">
+                  <div class="d-inline-block position-relative" style="height: 10px;">
+                    <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"></i>
+                    <i class="fa-solid fa-caret-down position-absolute top-0 start-0 p-0"></i>
+                  </div>
+                </button>
+                <span class="ms-3 fw-bold">Name</span>
+              </th>
+              <th class="deadline" id="btn-phone">
+                <button type="button" class="btn p-0" onclick="sortPhoneAsc('phone')">
+                  <div class="d-inline-block position-relative" style="height: 10px;">
+                    <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"></i>
+                    <i class="fa-solid fa-caret-down position-absolute top-0 start-0 p-0"></i>
+                  </div>
+                </button>
+                <span class="ms-3 fw-bold">Phone</span>
+              </th>
+              <th scope="col" class="action">Action</th>
             </tr>
-            <div class="modal fade" id="exampleModal<%= daftar.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </thead>
+          <tbody id="users-table-tbody">
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- add -->
+      <div class="position-relative" style="padding: 20px; box-shadow: 0px 0px 5px rgb(167, 167, 167);">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addingData"><i class="fa-solid fa-plus"
+            style="color: #ffffff;"></i></button>
+
+        <div class="modal fade" id="addingData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">User Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" style="display: flex; justify-content: center;">
+                <form class="form-container" id="form-user">
+                  <div class="form-add">
+                    <label for="name">Name</label>
+                    <input class="input-add" type="text" id="name" required>
                   </div>
-                  <div class="modal-body">
-                   Apakah kamu yakin menghapus data "<%= daftar.title %>" ?
+                  <div class="form-add">
+                    <label for="phone">Phone</label>
+                    <input class="input-add" type="text" id="phone" required>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <a  href="/todos/delete/<%= daftar.id %>" class="btn btn-warning">Yes</a>
-                  </div>
-                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete -->
+        <div class="modal fade" id="deleteData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>are you sure?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button id="btn-delete" type="submit" class="btn btn-primary">Yes</button>
               </div>
             </div>
-           <% } %> 
-          <% }) %>
-        </tbody>
-      </table>
-  <div class="bawah">
-      <a href="/todos/add/<%= usersid %>" class="btn btn-primary"><img src="/images/ad.png"></a> 
+          </div>
+        </div>
 
-      <div class="pagination">
-        <% if (page > 1){%>
-        <a class="page-link" href="/todos<%=url.includes('page=')?  url.replace(`page=${page}`, `page=${Number(page) -1}`):`?page=${Number(page) -1}`%>">&laquo;</a>
-        <% } %>
+        <!-- update -->
+        <div class="modal fade" id="updateData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">User Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" style="display: flex; justify-content: center;">
+                <form class="form-container" id="form-user">
+                  <div class="form-add">
+                    <label for="name">Name</label>
+                    <input class="input-add" type="text" id="uname" required>
+                  </div>
+                  <div class="form-add">
+                    <label for="phone">Phone</label>
+                    <input class="input-add" type="text" id="uphone" required>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="btn-update" type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
-      <% for(let i=1; i <=pages; i++){%>
-      <a class="page-link<%= page == i ? ' active': ''%>" href="/todos<%=url.includes('page=')? url.replace(`page=${page}`, `page=${i}`):`?page=${i}` %>"> <%= i %> </a>
-      <% } %>
-
-      <% if (page < pages) {%>
-      <a class="page-link" href="/todos<%=url.includes('page=')?  url.replace(`page=${page}`, `page=${Number(page) +1}`):`?page=${Number(page) +1}`%>">&raquo;</a>
-      <% } %>
-      
-    <%- include('../partials/footer.ejs')%>
+        <!-- pagination -->
+        <div class="container-button">
+          <div id="pagination" class="pagination">
+            
+          </div>
+        </div>
       </div>
-  </div>
-  </body>
-</html>
+    </div>
+    <%- include('./partials/userFooter') %>

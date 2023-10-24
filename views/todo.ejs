@@ -1,0 +1,61 @@
+<%- include('./partials/headTodo') %>
+    <div class="container-list">
+        <div class="h1-wrapper">
+            <h1>Todo List</h1>
+        </div>
+        <div class="container" style="padding: 0px;">
+            <div class="container-search">
+                <div class="search-wrapper">
+                    <div class="title-search">
+                        <label for="title">Title</label>
+                        <input oninput="find()" id="title" class="input" type="text" placeholder="insert your title">
+                    </div>
+                    <div class="deadline-search">
+                        <label for="deadline">Deadline</label>
+                        <div class="str-end">
+                            <input id="strDate" class="input" type="date">&nbsp;
+                            <p>s.d.</p>&nbsp;
+                            <input id="endDate" class="input" type="date">
+                        </div>
+                    </div>
+                    <div class="complete-search">
+                        <label for="complete">Complete</label>
+                        <select id="complete" class="input" style="background-color: #ffffff;" name="complete" id="complete-choose" >
+                            <option value="true">Done</option>
+                            <option value="false">Not Yet</option>
+                        </select>
+                    </div>
+                    <div class="complete-search">
+                        <div class="btn btn-success">
+                            <button type="button" class="btn p-0" onclick="sortNameAsc('name')">
+                                <div class="d-inline-block position-relative" style="height: 10px;">
+                                    <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"
+                                        style="color: #ffffff;"></i>
+                                    <i class="fa-solid fa-caret-down position-absolute top-0 start-0 p-0"
+                                        style="color: #ffffff;"></i>
+                                </div>
+                            </button>
+                            <span class="ms-3 fw-bold">sort by deadline</span>
+                        </div>
+                        <div class="input">
+                            <button type="button" onclick="findReset()" class="btn btn-warning"><i class="fa-solid fa-arrows-rotate"></i></button>&nbsp;
+                            <button type="button" onclick="find()" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="search-input-wrapper">
+                <input id="add-title" type="text" class="input-search">&nbsp;
+                <button onclick="addData()" class="btn btn-outline-primary"><i class="fa-solid fa-circle-arrow-down"
+                        style="color: #3584e4;"></i></button>
+            </div>
+            <div class="container-todo" id="todo-list">
+
+            </div>
+        </div>
+    </div>
+    <script>
+        let executorId = "<%= id %>"
+
+    </script>
+    <%- include('./partials/todoFooter') %>
