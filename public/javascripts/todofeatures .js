@@ -31,7 +31,7 @@ async function findReset() {
     }
 }
 
-const readData = async () => {
+const readData = async(page = 1) => {
     try {
         const response = await fetch(
             `http://localhost:3000/api/todos/?executor=${executor}&page=${page}&title=${title}&strdeadline=${strdeadline}&enddeadline=${enddeadline}&complete=${complete}`
