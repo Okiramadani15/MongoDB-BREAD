@@ -31,15 +31,13 @@ async function findReset() {
     }
 }
 
-const readData = async (page = 1) => {
+const readData = async () => {
     try {
         const response = await fetch(
             `http://localhost:3000/api/todos/?executor=${executor}&page=${page}&title=${title}&strdeadline=${strdeadline}&enddeadline=${enddeadline}&complete=${complete}`
         );
         const todos = await response.json();
         let html = "";
-        let pagination = "";
-        let pageNumber = "";
         const offset = todos.offset
 
         todos.data.forEach((item, index) => {
