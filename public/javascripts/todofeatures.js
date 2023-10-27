@@ -1,4 +1,4 @@
-let title = '', complete = '', strdeadline = '', enddeadline = '', sortBy = '_id', sortMode = 'desc', limit = 10, executor = executorId, deadline = null, todoId = null
+let title = '', complete = '', strdeadline = '', enddeadline = '', sortBy = '_id', sortMode = 'desc', limit = 10, executor = null, deadline = null, todoId = null
 
 function setExecutor(userId) {
     executor = userId
@@ -33,19 +33,23 @@ async function findReset() {
 
 const readData = async(page = 1) => {
     try {
+        console.log(executor)
         const response = await fetch(
             `http://localhost:3000/api/todos/?executor=${executor}&page=${page}&title=${title}&strdeadline=${strdeadline}&enddeadline=${enddeadline}&complete=${complete}`
         );
+        console.log(response)
         const todos = await response.json();
         let html = "";
         const offset = todos.offset
-
+            console.log(todos)
         todos.data.forEach((item, index) => {
             html += `
+            <div>
             <div class="data-show ${item.complete ? ' bg-success-subtle' : ' --bs-body-bg'}">
                 <span class="form-control border-0 bg-transparent ps-0">${item.deadline} ${item.title}</span>
                 <button type="button" class="btn p-1" ><i class="fa-sharp fa-solid fa-pencil"></i></button>&nbsp;
                 <button type="button" class="btn p-1" ><i class="fa-solid fa-trash"></i></button>
+            </div>
             </div>
           `
         })
@@ -72,4 +76,3 @@ const addData = async () => {
 
     } catch (err) { console.log(err) }
 }
-readData()

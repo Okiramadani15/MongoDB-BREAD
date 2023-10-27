@@ -167,6 +167,7 @@ const readData = async (page = 1) => {
         document.getElementById('users-table-tbody').innerHTML = html
     } catch (err) { console.log(err) }
 }
+
 readData()
 
 // ini fitur user

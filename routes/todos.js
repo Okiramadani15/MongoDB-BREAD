@@ -16,7 +16,7 @@ module.exports = function (db) {
             const params = {}
 
 
-            if (executor) params['executor'] = executor
+            if (executor) params['executor'] = new ObjectId(executor)
             if (title) params['title'] = new RegExp(title, 'i')
             if (complete) params['complete'] = JSON.parse(complete)
             if (strdeadline && enddeadline) {
@@ -29,11 +29,12 @@ module.exports = function (db) {
 
             const limit = 5
             const offset = (page - 1) * limit
-
+            console.log(params)
             const total = await Todo.count(params)
             const pages = Math.ceil(total / limit)
 
             const todos = await Todo.find(params).sort(sort).limit(limit).skip(offset).toArray();
+            console.log(todos)
             res.json({
                 data: todos,
                 total,
