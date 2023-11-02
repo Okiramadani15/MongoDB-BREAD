@@ -23,6 +23,7 @@
                         <select id="complete" class="input" style="background-color: #ffffff;" name="complete" id="complete-choose" >
                             <option value="true">Done</option>
                             <option value="false">Not Yet</option>
+                            <option value="">Default</option>
                         </select>
                     </div>
                     <div class="complete-search">
@@ -37,7 +38,7 @@
                             </button>
                             <span class="ms-3 fw-bold">sort by deadline</span>
                         </div>
-                        <div class="input">
+                        <div class="click">
                             <button type="button" onclick="findReset()" class="btn btn-warning"><i class="fa-solid fa-arrows-rotate"></i></button>&nbsp;
                             <button type="button" onclick="find()" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
@@ -54,9 +55,42 @@
             </div>
         </div>
     </div>
+
+<div class="modal fade" id="edit-data" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Todo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Title</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Deadline</label>
+            <input id="modal" class="input-deadline-2" type="date">
+            <label>complete</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Done
+                </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
     <%- include('./partials/todoFooter') %>
     <script>
         setExecutor('<%= id %>')
     </script>  
-        
+
     

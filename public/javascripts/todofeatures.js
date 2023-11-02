@@ -1,4 +1,4 @@
-let title = '', complete = '', strdeadline = '', enddeadline = '', sortBy = '_id', sortMode = 'desc', limit = 10, executor = null, deadline = null, todoId = null
+let title = '', complete = '', strdeadline = '', enddeadline = '', sortBy = '_id', sortMode = 'desc', limit = 10, executor = null, deadline = null, todoId = null, page = 1 
 
 function setExecutor(userId) {
     executor = userId
@@ -12,30 +12,8 @@ async function find() {
         strdeadline = $("#strDate").val();
         enddeadline = $("#endDate").val();
         complete = $("#complete").val();
-        readData()
-    } catch (error) {
-        console.log('ini errornya =>', error)
-    }
-}
-
-async function findReset() {
-    try {
-        let getSearch = $("#title").val("")
-        title = getSearch.toString()
-        strdeadline = $("#strDate").val("")
-        enddeadline = $("#endDate").val("")
-        complete = $("#complete").val("")
-        readData()
-    } catch (error) {
-        console.log('ini errornya =>', error)
-    }
-}
-
-const readData = async(page = 1) => {
-    try {
-        console.log(executor)
         const response = await fetch(
-            `http://localhost:3000/api/todos/?executor=${executor}&page=${page}&title=${title}&strdeadline=${strdeadline}&enddeadline=${enddeadline}&complete=${complete}`
+            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&strdeadline=${strdeadline}&enddeadline=${enddeadline}&complete=${complete}`
         );
         console.log(response)
         const todos = await response.json();
@@ -56,7 +34,58 @@ const readData = async(page = 1) => {
 
         $("#todo-list").html(html);
 
-    } catch (err) { console.log(err) }
+    } catch (error) {
+        console.log('ini errornya =>', error)
+    }
+}
+
+async function findReset() {
+    try {
+        let getSearch = $("#title").val("")
+        title = getSearch.toString()
+        strdeadline = $("#strDate").val("")
+        enddeadline = $("#endDate").val("")
+        complete = $("#complete").val("")
+        readData()
+    } catch (error) {
+        console.log('ini errornya =>', error)
+    }
+}
+
+$(window).scroll(function() {
+    if($(window).scrollTop() == $(document).height() - $(window).height()) {
+        page += 1
+        readData()
+    }
+});
+        
+const readData = async(page = 1) => {
+    try {
+        console.log(executor)
+        const response = await fetch(
+            `http://localhost:3000/api/todos/?executor=${executor}&page=${page}&title=${title}&strdeadline=${strdeadline}&enddeadline=${enddeadline}&complete=${complete}`
+        );
+        console.log(response)
+        const todos = await response.json();
+        let html = "";
+        const offset = todos.offset
+            console.log(todos)
+        todos.data.forEach((item, index) => {
+            html += `
+            <div>
+            <div class="data-show ${item.complete ? ' bg-success-subtle' : ' --bs-body-bg'}">
+                <span class="form-control border-0 bg-transparent ps-0">${item.deadline} ${item.title}</span>
+                <button type="button" class="btn p-1" data-bs-toggle="modal" data-bs-target="#edit-data" ><i class="fa-sharp fa-solid fa-pencil"></i></button>&nbsp;
+                <button type="button" class="btn p-1" data-bs-toggle="modal" data-bs-target="#edit-data"><i class="fa-solid fa-trash"></i></button>
+            </div>
+            </div>
+          `
+        })
+
+        $("#todo-list").append(html);
+
+    } catch (err) { console.log(err) 
+    }
 }
 
 const addData = async () => {
