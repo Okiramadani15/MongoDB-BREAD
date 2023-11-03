@@ -92,7 +92,7 @@ body {
   justify-content: space-between;
 }
 
-.str-end {
+.start-end {
   width: 75%;
   border-radius: 5px;
   display: inline-flex;
@@ -170,16 +170,52 @@ body {
   border: 1px solid #ced4da;
 }
 
+.input-findreset{
+  width: 75%;
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid #ffff;
+}
+
 .data-show {
-  background-color: whitesmoke;
+  /* background-color: whitesmoke; */
   display: inline-flex;
   margin: 13px 0px 13px 0px;
   padding: 0px 10px 0px 10px;
-  box-shadow: 5px 0px 5px rgb(167, 167, 167);
+  box-shadow: 1px 0px 3px rgb(167, 167, 167);
   width: 100%;
 }
 
 .form-control {
   display: block;
-  width: 10%;
+  width: 100%;
+  height: 50%;
+}
+
+.input-add{
+  width: 75%;
+  height: 35px;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  margin-bottom: 5px;
+  margin-left: 50px;
+
+}
+.input-add1{
+  width: 75%;
+  height: 35px;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  margin-bottom: 5px;
+  margin-left: 20px;
+}
+.checkbox{
+  /* border-radius: 5px; */
+  margin-top: -1px;
+  margin-left: 85px;
+}
+
+.ulabel-complete{
+  border-radius: 5px;
+  margin-right: 85px;
 }

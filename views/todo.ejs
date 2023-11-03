@@ -12,24 +12,27 @@
                     </div>
                     <div class="deadline-search">
                         <label for="deadline">Deadline</label>
-                        <div class="str-end">
-                            <input id="strDate" class="input" type="date">&nbsp;
+                        <div class="start-end">
+                            <input id="startDate" class="input" type="date">&nbsp;
                             <p>s.d.</p>&nbsp;
                             <input id="endDate" class="input" type="date">
                         </div>
                     </div>
                     <div class="complete-search">
                         <label for="complete">Complete</label>
-                        <select id="complete" class="input" style="background-color: #ffffff;" name="complete" id="complete-choose" >
-                            <option value="true">Done</option>
+                        <select id="complete" class="input" style="background-color: #ffffff;" name="complete"
+                            id="complete-choose">
+                            <option disabled selected>-select complete-</option>
                             <option value="false">Not Yet</option>
+                            <option value="true">Done</option>
                             <option value="">Default</option>
+
                         </select>
                     </div>
                     <div class="complete-search">
-                        <div class="btn btn-success">
-                            <button type="button" class="btn p-0" onclick="sortNameAsc('name')">
-                                <div class="d-inline-block position-relative" style="height: 10px;">
+                        <div class="btn btn-success" id="btn-deadline">
+                            <button id="sortDeadline" type="button" class="btn p-0" onclick="sortDeadlineAsc('deadline')">
+                                <div  class="d-inline-block position-relative" style="height: 10px;">
                                     <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"
                                         style="color: #ffffff;"></i>
                                     <i class="fa-solid fa-caret-down position-absolute top-0 start-0 p-0"
@@ -38,15 +41,17 @@
                             </button>
                             <span class="ms-3 fw-bold">sort by deadline</span>
                         </div>
-                        <div class="click">
-                            <button type="button" onclick="findReset()" class="btn btn-warning"><i class="fa-solid fa-arrows-rotate"></i></button>&nbsp;
-                            <button type="button" onclick="find()" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <div class="input-findreset">
+                            <button type="button" onclick="findReset()" class="btn btn-warning"><i
+                                    class="fa-solid fa-arrows-rotate"></i></button>&nbsp;
+                            <button type="button" onclick="find()" class="btn btn-info"><i
+                                    class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="search-input-wrapper">
-                <input id="add-title" type="text" class="input-search">&nbsp;
+                <input id="add-title" type="text" class="input-search" placeholder="Title">&nbsp;
                 <button onclick="addData()" class="btn btn-outline-primary"><i class="fa-solid fa-circle-arrow-down"
                         style="color: #3584e4;"></i></button>
             </div>
@@ -56,41 +61,63 @@
         </div>
     </div>
 
-<div class="modal fade" id="edit-data" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Update Todo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Title</label>
-            <input type="text" class="form-control" id="recipient-name">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Deadline</label>
-            <input id="modal" class="input-deadline-2" type="date">
-            <label>complete</label>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                  Done
-                </label>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="">Save Changes</button>
-      </div>
+    <!--  Delete -->
+    <div class="modal fade" id="deleteData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>are you sure?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button id="btn-delete" type="submit" class="btn btn-primary" onclick="deleteData()">Yes</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-    <%- include('./partials/todoFooter') %>
-    <script>
-        setExecutor('<%= id %>')
-    </script>  
 
-    
+    <!-- update -->
+    <div class="modal fade" id="updateData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Update Todo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-container" id="form-user">
+                        <div class="form-add">
+                            <label class="ulabel-title" for="title">Title</label>
+                            <input class="input-add" type="text" id="utitle" required>
+                        </div>
+                        <div class="form-add">
+                            <label class="ulabel-deadline" for="deadline">Deadline</label>
+                            <input class="input-add1" type="datetime-local" id="udeadline" required>
+                        </div>
+                        <div class="form-add">
+                            <label class="ulabel-complete" for="complete">Complete</label>
+                            <div class="input-complete-edit">
+                                <input class="checkbox" type="checkbox" name="complete" id="ucomplete" value="true">
+                                Done
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="btn-update" type="button" onclick="updateData()" class="btn btn-primary">Save change</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- update selesai  -->
+    <script>
+        let executorId = "<%= id %>"
+        
+    </script>
+    <%- include('./partials/todoFooter') %>
+

@@ -147,8 +147,11 @@ th.action {
 }
 
 .input-add {
-  border: 1px solid black;
-  border-radius: 5px;
+  width: 75%;
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    margin-top: 2%;
 }
 
 .id{

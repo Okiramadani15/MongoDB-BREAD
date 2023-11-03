@@ -1,6 +1,7 @@
 var express = require('express');
 const { ObjectId } = require('mongodb');
 var router = express.Router();
+var moment = require('moment')
 
 
 module.exports = function (db) {
@@ -40,7 +41,8 @@ module.exports = function (db) {
                 total,
                 pages,
                 page,
-                limit
+                limit,
+                moment
             })
         } catch (err) {
             console.log(err)
