@@ -50,13 +50,14 @@
                     </div>
                 </div>
             </div>
+            <form onsubmit="addData(event)">
             <div class="search-input-wrapper">
                 <input id="add-title" type="text" class="input-search" placeholder="Title">&nbsp;
-                <button onclick="addData()" class="btn btn-outline-primary"><i class="fa-solid fa-circle-arrow-down"
+                <button type="submit" class="btn btn-outline-primary"><i class="fa-solid fa-circle-arrow-down"
                         style="color: #3584e4;"></i></button>
             </div>
+        </form>
             <div class="container-todo" id="todo-list">
-
             </div>
         </div>
     </div>
@@ -118,6 +119,6 @@
     <script>
         let executorId = "<%= id %>"
         
-    </script>
+    </script>  
     <%- include('./partials/todoFooter') %>
 

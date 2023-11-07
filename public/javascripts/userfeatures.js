@@ -154,7 +154,7 @@ const readData = async (page = 1) => {
         }
         pagination = `
         <div class="mx-3">
-            <span>showing ${users.offset + 1} to ${limit} of ${users.total} entries</span>
+            <span>showing ${users.offset + 1} to ${(Number(limit) + Number(users.offset))} of ${users.total} entries</span>
                 <div class="bpage">
                     ${users.page == 1 ? '' : '<button onclick="changePage(page - 1)" class="page-link">&laquo;</button>'} 
                     ${pageNumber}

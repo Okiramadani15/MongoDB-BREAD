@@ -11,19 +11,19 @@ module.exports = function (db) {
 
     router.get('/', async function (req, res, next) {
         try {
-            const { page = 1, title, complete, strdeadline, enddeadline, sortBy = '_id', sortMode, executor } = req.query
+            const { page = 1, title, complete, startdeadline, enddeadline, sortBy = '_id', sortMode ='asc', executor } = req.query
             const sort = {}
             sort[sortBy] = sortMode
             const params = {}
 
 
-            if (executor) params['executor'] = new ObjectId(executor)
+            if (executor) params['executor'] = executor
             if (title) params['title'] = new RegExp(title, 'i')
             if (complete) params['complete'] = JSON.parse(complete)
-            if (strdeadline && enddeadline) {
-                params['deadline'] = {deadline: {$gt: new Date(strdeadline), $lt: new Date (enddeadline)}}
-            } else if (strdeadline) {
-                params['deadline'] = { $gte: new Date(strdeadline) }
+            if (startdeadline && enddeadline) {
+                params['deadline'] = {deadline: {$gt: new Date(startdeadline), $lt: new Date (enddeadline)}}
+            } else if (startdeadline) {
+                params['deadline'] = { $gte: new Date(startdeadline) }
             } else if (enddeadline) {
                 params['deadline'] = { $lte: new Date (enddeadline) }
             }
@@ -53,10 +53,12 @@ module.exports = function (db) {
     router.post('/', async function (req, res, next) {
         try {
             const { title, executor } = req.body
-            const user = await User.findOne({ _id: new ObjectId(executor) })
-            const todos = await Todo.insertOne({title, complete: false, deadline: new Date(Date.now() + 24 * 60 * 60 * 1000), executor: user._id})
-            res.status(201).json(todos)
+            const todosuser = await User.findOne({ _id:  new ObjectId(executor)})
+            const todos = await Todo.insertOne({title, complete: false, deadline: new Date(Date.now() + 24 * 60 * 60 * 1000), executor: todosuser._id})
+            const data = await Todo.findOne({ _id: todos.insertedId})
+            res.status(201).json(data)
         } catch (err) {
+            console.log("ini error", err)
             res.status(500).json({ err })
         }
     });
@@ -65,8 +67,9 @@ module.exports = function (db) {
         try {
             const id = req.params.id
             const todos = await Todo.findOne({ _id: new ObjectId(id) })
+            console.log('ini todos', todos)
             res.status(200).json(todos)
-        } catch (error) {
+        } catch (err) {
             res.status(500).json({ err })
         }
     });
@@ -75,7 +78,7 @@ module.exports = function (db) {
         try {
             const { title, deadline, complete } = req.body
             const id = req.params.id
-            const todos = await Todo.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { title: title, deadline: deadline, complete: complete } })
+            const todos = await Todo.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { title: title, deadline: new Date(deadline), complete: complete }},{returnDocument: "after"})
             if(todos) {
                 res.status(201).json(todos)
             } else {
