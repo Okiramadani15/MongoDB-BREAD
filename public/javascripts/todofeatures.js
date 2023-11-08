@@ -1,6 +1,6 @@
 
 
-let title = '', page = 1, complete = '', startdeadline = '', enddeadline = '', sortBy = '_id', sortMode = 'desc', limit = 5, executor = executorId, deadline = null, todoId = null, id = null
+let title = '', page = 1, complete = '', startdateDeadline = '', enddeadline = '', sortBy = '_id', sortMode = 'desc', limit = 5, executor = executorId, deadline = null, todoId = null, id = null
 
 
 function setExecutor(userId) {
@@ -32,11 +32,11 @@ const updateForm = new bootstrap.Modal('#updateData', {
 
 async function find() {
     title = $("#title").val();
-    startdeadline = $("#startDate").val();
+    startdateDeadline = $("#startDate").val();
     enddeadline = $("#endDate").val();
 
     const response = await fetch(
-        `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&startdeadline=${startdeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+        `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&startdateDeadline=${startdateDeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
     );
     const todos = await response.json();
     let html = "";
@@ -59,12 +59,12 @@ async function findReset() {
     try {
         title = ''
         $("#title").html('')
-        startdeadline = ''
-        $("#startdeadline").html('')
+        startdateDeadline = ''
+        $("#startdateDeadline").html('')
         enddeadline = ''
         $("#enddeadline").html('')
         const response = await fetch(
-            `http://localhost:3000/api/todos/?executor=${executor}&page=1&title=${title}&startdeadline=${startdeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+            `http://localhost:3000/api/todos/?executor=${executor}&page=1&title=${title}&startdateDeadline=${startdateDeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
         );
         const todos = await response.json();
         console.log('ini todos => ', todos)
@@ -103,7 +103,7 @@ const sortDeadlineAsc = async (deadline) => {
   `
         $(`#btn-${deadline}`).html(sortasc)
         const response = await fetch(
-            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&startdeadline=${startdeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&startdateDeadline=${startdateDeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
         );
         console.log(response)
         const todos = await response.json();
@@ -138,7 +138,7 @@ const sortDeadlineDesc = async (deadline) => {
   `
         $(`#btn-${deadline}`).html(sortdesc)
         const response = await fetch(
-            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&startdeadline=${startdeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&startdateDeadline=${startdateDeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
         );
         const todos = await response.json();
         let html = "";
@@ -161,7 +161,7 @@ const sortDeadlineDesc = async (deadline) => {
 const readData = async () => {
     try {
         const response = await fetch(
-            `http://localhost:3000/api/todos/?executor=${executor}&page=${page}&title=${title}&startdeadline=${startdeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+            `http://localhost:3000/api/todos/?executor=${executor}&page=${page}&title=${title}&startdateDeadline=${startdateDeadline}&enddeadline=${enddeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
         );
         const todos = await response.json();
         let html = "";

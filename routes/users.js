@@ -8,13 +8,13 @@ module.exports = function (db) {
 
   router.get('/', async function (req, res, next) {
     try {
-      const { page = 1, limit = 5, search = '', sortBy  , sortMode } = req.query
+      const { page = 1, limit = 5, query = '', sortBy  , sortMode } = req.query
       const sort = {}
       sort[sortBy] = sortMode == 'asc' ? 1 : -1
       const params = {}
 
-      if (search) {
-        params['$or'] = [{ "name": new RegExp(search, 'i') }, { "phone": new RegExp(search, 'i') }]
+      if (query) {
+        params['$or'] = [{ "name": new RegExp(query, 'i') }, { "phone": new RegExp(query, 'i') }]
       }
 
       const offset = (page - 1) * limit
@@ -28,8 +28,8 @@ module.exports = function (db) {
         data: users,
         total,
         pages,
-        page,
-        limit,
+        page : Number(page),
+        limit : Number(limit),
         offset
       })
     } catch (err) {
@@ -64,7 +64,7 @@ module.exports = function (db) {
     try {
       const { name, phone } = req.body
       const id = req.params.id
-      const users = await User.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { name: name, phone: phone } }, {returnDocument: "after"})
+      const users = await User.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { name: name, phone: phone } },{returnDocument: "after"})
       res.status(201).json(users)
     } catch (err) {
       res.status(500).json({ err })

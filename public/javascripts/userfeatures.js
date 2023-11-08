@@ -1,6 +1,6 @@
 let id = null;
 let limit = document.getElementById('limit').value || 10;
-let search = '';
+let query = '';
 let sortBy = '_id', sortMode = 'desc'
 
 function setId(_id) {
@@ -37,7 +37,7 @@ document.getElementById('btn-update').addEventListener('click', function (event)
 async function find() {
     try {
         let getSearch = document.getElementById("input-search").value;
-        search = getSearch.toString()
+        query = getSearch.toString()
         readData()
     } catch (error) {
         console.log('ini errornya =>', error)
@@ -46,7 +46,7 @@ async function find() {
 
 async function reset() {
     try {
-        search = document.getElementById("input-search").value = "";
+        query = document.getElementById("input-search").value = "";
         readData()
     } catch (err) {
         console.log('ini error nya bro => ', err)
@@ -120,7 +120,7 @@ const sortNameDesc = (name) => {
 const readData = async (page = 1) => {
     try {
         const response = await fetch(
-            `http://localhost:3000/api/users/?page=${page}&limit=${limit}&search=${search}&sortBy=${sortBy}&sortMode=${sortMode}`
+            `http://localhost:3000/api/users/?page=${page}&limit=${limit}&query=${query}&sortBy=${sortBy}&sortMode=${sortMode}`
         );
         const users = await response.json();
         let html = '';

@@ -1,7 +1,8 @@
 var express = require('express');
 const { ObjectId } = require('mongodb');
 var router = express.Router();
-var moment = require('moment')
+var moment = require('moment');
+const users = require('./users');
 
 
 module.exports = function (db) {
@@ -11,8 +12,10 @@ module.exports = function (db) {
 
     router.get('/', async function (req, res, next) {
         try {
-            const { page = 1, title, complete, startdeadline, enddeadline, sortBy = '_id', sortMode ='asc', executor } = req.query
+            const {limit = 5, page = 1, title, complete, startdateDeadline, enddateDeadline, sortBy = '_id', sortMode ='asc', executor } = req.query
             const sort = {}
+            // page = 1
+            // limit = 5
             sort[sortBy] = sortMode
             const params = {}
 
@@ -20,28 +23,28 @@ module.exports = function (db) {
             if (executor) params['executor'] = executor
             if (title) params['title'] = new RegExp(title, 'i')
             if (complete) params['complete'] = JSON.parse(complete)
-            if (startdeadline && enddeadline) {
-                params['deadline'] = {deadline: {$gt: new Date(startdeadline), $lt: new Date (enddeadline)}}
-            } else if (startdeadline) {
-                params['deadline'] = { $gte: new Date(startdeadline) }
-            } else if (enddeadline) {
-                params['deadline'] = { $lte: new Date (enddeadline) }
+            if (startdateDeadline && enddateDeadline) {
+                params['deadline'] = {$gte: new Date(startdateDeadline), $lte: new Date (enddateDeadline)}
+            } else if (startdateDeadline) {
+                params['deadline'] = { $gte: new Date(startdateDeadline) }
+            } else if (enddateDeadline) {
+                params['deadline'] = { $lte: new Date (enddateDeadline) }
             }
+            console.log("ini page", page)
 
-            const limit = 5
             const offset = (page - 1) * limit
             console.log(params)
             const total = await Todo.count(params)
             const pages = Math.ceil(total / limit)
 
-            const todos = await Todo.find(params).sort(sort).limit(limit).skip(offset).toArray();
+            const todos = await Todo.find(params).sort(sort).limit(Number(limit)).skip(offset).toArray();
             console.log(todos)
             res.json({
                 data: todos,
                 total,
                 pages,
-                page,
-                limit,
+                page : Number(page),
+                limit : Number(limit),
                 moment
             })
         } catch (err) {
