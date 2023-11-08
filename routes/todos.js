@@ -24,13 +24,17 @@ module.exports = function (db) {
             if (title) params['title'] = new RegExp(title, 'i')
             if (complete) params['complete'] = JSON.parse(complete)
             if (startdateDeadline && enddateDeadline) {
-                params['deadline'] = {$gte: new Date(startdateDeadline), $lte: new Date (enddateDeadline)}
+                const end = new Date (enddateDeadline)
+                end.setHours(23,59,59)
+                params['deadline'] = {$gte: new Date(startdateDeadline), $lte: end}
             } else if (startdateDeadline) {
                 params['deadline'] = { $gte: new Date(startdateDeadline) }
             } else if (enddateDeadline) {
-                params['deadline'] = { $lte: new Date (enddateDeadline) }
+                const end = new Date (enddateDeadline)
+                end.setHours(23,59,59)
+                params['deadline'] = { $lte: end }
             }
-            console.log("ini page", page)
+            console.log("ini enddate", enddateDeadline)
 
             const offset = (page - 1) * limit
             console.log(params)

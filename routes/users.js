@@ -16,7 +16,7 @@ module.exports = function (db) {
       if (query) {
         params['$or'] = [{ "name": new RegExp(query, 'i') }, { "phone": new RegExp(query, 'i') }]
       }
-
+      console.log(query)
       const offset = (page - 1) * limit
 
       const total = await User.count(params)
