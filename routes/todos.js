@@ -16,8 +16,8 @@ module.exports = function (db) {
             const sort = {}
             // page = 1
             // limit = 5
-            sort[sortBy] = sortMode
             const params = {}
+            sort[sortBy] = sortMode
 
 
             if (executor) params['executor'] = executor
@@ -34,13 +34,12 @@ module.exports = function (db) {
                 end.setHours(23,59,59)
                 params['deadline'] = { $lte: end }
             }
-            console.log("ini enddate", enddateDeadline)
+            
 
             const offset = (page - 1) * limit
-            console.log(params)
             const total = await Todo.count(params)
             const pages = Math.ceil(total / limit)
-
+            console.log('params',params)
             const todos = await Todo.find(params).sort(sort).limit(Number(limit)).skip(offset).toArray();
             console.log(todos)
             res.json({
@@ -60,9 +59,9 @@ module.exports = function (db) {
     router.post('/', async function (req, res, next) {
         try {
             const { title, executor } = req.body
-            const todosuser = await User.findOne({ _id:  new ObjectId(executor)})
-            const todos = await Todo.insertOne({title, complete: false, deadline: new Date(Date.now() + 24 * 60 * 60 * 1000), executor: todosuser._id})
-            const data = await Todo.findOne({ _id: todos.insertedId})
+            const todos = await Todo.insertOne({ title: title, complete: false, deadline: new Date(Date.now() + 24 * 60 * 60 * 1000), executor})
+            const data = await Todo.findOne({ _id: new ObjectId(todos.insertedId.toString())})
+            console.log(data)
             res.status(201).json(data)
         } catch (err) {
             console.log("ini error", err)

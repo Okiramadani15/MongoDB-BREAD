@@ -171,7 +171,8 @@ const readData = async () => {
         const todos = await response.json();
         let html = "";
         const offset = todos.offset
-        console.log('todos', todos.data)
+        console.log('todos', todos)
+        console.log(response)
         todos.data.forEach((item, index) => {
            return html += `
             <div id="data-show${item._id}" class="data-show ${item.complete == false && new Date().getTime() > new Date(`${item.deadline}`).getTime() ? 'bg-danger-subtle' : item.complete == true ? 'bg-success-subtle' : 'bg-secondary-subtle'}">
@@ -199,16 +200,17 @@ const addData = async (event) => {
             body: JSON.stringify({ title, executor }),
         })
         const todos = await response.json();
-
+        
         $("#todo-list").prepend(`
-            <div id="data-show${todos._id}" class="data-show ${todos.complete == false && new Date().getTime() > new Date(`${todos.deadline}`).getTime() ? 'bg-danger-subtle' : todos.complete == true ? 'bg-success-subtle' : 'bg-secondary-subtle'}">
-                <span class="form-control border-0 bg-transparent ps-0"> ${moment(new Date(Date.now() + 24 * 60 * 60 * 1000)).format('DD-MM-YYYY, h:mm')} ${title}</span>
-                <button type="button" class="btn p-1" onclick="getData('${todos._id}')"  data-bs-toggle="modal" data-bs-target="#updateData"><i class="fa-sharp fa-solid fa-pencil"></i></button>&nbsp;
-                <button type="button" class="btn p-1" onclick="setId('${todos._id}')" data-bs-toggle="modal" data-bs-target="#deleteData"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          `)
+        <div id="data-show${todos._id}" class="data-show ${todos.complete == false && new Date().getTime() > new Date(`${todos.deadline}`).getTime() ? 'bg-danger-subtle' : todos.complete == true ? 'bg-success-subtle' : 'bg-secondary-subtle'}">
+        <span class="form-control border-0 bg-transparent ps-0"> ${moment(new Date(Date.now() + 24 * 60 * 60 * 1000)).format('DD-MM-YYYY, h:mm')} ${title}</span>
+        <button type="button" class="btn p-1" onclick="getData('${todos._id}')"  data-bs-toggle="modal" data-bs-target="#updateData"><i class="fa-sharp fa-solid fa-pencil"></i></button>&nbsp;
+        <button type="button" class="btn p-1" onclick="setId('${todos._id}')" data-bs-toggle="modal" data-bs-target="#deleteData"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        `)
         $("#add-title").val('');
-
+        
+        console.log(response, todos)
 
     } catch (err) { console.log(err) }
 }
