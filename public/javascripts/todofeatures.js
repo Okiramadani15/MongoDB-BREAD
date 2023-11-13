@@ -14,21 +14,7 @@ function setId(_id) {
 }
 
 //scroll pagination
-$(window).scroll(function () {
-    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        page += 1
-        readData()
-    }
-});
-//scroll pagination done
 
-const deleteForm = new bootstrap.Modal('#deleteData', {
-    keyboard: false
-})
-
-const updateForm = new bootstrap.Modal('#updateData', {
-    keyboard: false
-})
 
 async function find() {
     title = $("#title").val();
@@ -40,7 +26,7 @@ async function find() {
     }
 
     const response = await fetch(
-        `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+        `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&limit${limit}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
     );
     console.log(response)
     const todos = await response.json();
@@ -69,7 +55,7 @@ async function findReset() {
         enddateDeadline = ''
         $("#enddateDeadline").html('')
         const response = await fetch(
-            `http://localhost:3000/api/todos/?executor=${executor}&page=1&title=${title}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&limit${limit}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
         );
         const todos = await response.json();
         console.log('ini todos => ', todos)
@@ -96,19 +82,25 @@ async function findReset() {
 
 const sortDeadlineAsc = async (deadline) => {
     try {
+        page = 1
         sortBy = deadline
         sortMode = 'asc'
         let sortasc = `
-    <button type="button" class="btn p-0" onclick="sortDeadlineDesc('deadline')">
-        <div class="d-inline-block position-relative" style="height: 10px;">
-            <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"></i>
-        </div>
-    </button>
-    <span class="ms-3 fw-bold">Deadline</span>
+        <div class="btn btn-success" id="btn-deadline" onclick="sortDeadlineDesc('deadline')">
+                            <button id="sortDeadline" type="button" class="btn p-0">
+                                <div  class="d-inline-block position-relative" style="height: 10px;">
+                                    <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"
+                                        style="color: #ffffff;"></i>
+                                    <i class="fa-solid fa-caret-down position-absolute top-0 start-0 p-0"
+                                        style="color: #ffffff;"></i>
+                                </div>
+                            </button>
+                            <span class="ms-3 fw-bold">sort by deadline</span>
+                        </div>
   `
         $(`#btn-${deadline}`).html(sortasc)
         const response = await fetch(
-            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&limit${limit}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
         );
         console.log(response)
         const todos = await response.json();
@@ -131,19 +123,26 @@ const sortDeadlineAsc = async (deadline) => {
 
 const sortDeadlineDesc = async (deadline) => {
     try {
+        page = 1
         sortBy = deadline
         sortMode = 'desc'
         let sortdesc = `
-    <button type="button" class="btn p-0" onclick="sortDeadlineAsc('deadline')">
-        <div class="d-inline-block position-relative" style="height: 10px;">
-            <i class="fa-solid fa-caret-down position-absolute bottom-0 start-0 p-0"></i>
-        </div>
-    </button>
-    <span class="ms-3 fw-bold">Deadline</span>
+        <div class="btn btn-success" id="btn-deadline" onclick="sortDeadlineAsc('deadline')">
+        <button id="sortDeadline" type="button" class="btn p-0">
+            <div  class="d-inline-block position-relative" style="height: 10px;">
+                <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"
+                    style="color: #ffffff;"></i>
+                <i class="fa-solid fa-caret-down position-absolute top-0 start-0 p-0"
+                    style="color: #ffffff;"></i>
+            </div>
+        </button>
+        <span class="ms-3 fw-bold">sort by deadline</span>
+    </div>
+   
   `
         $(`#btn-${deadline}`).html(sortdesc)
         const response = await fetch(
-            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+            `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&limit${limit}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
         );
         const todos = await response.json();
         let html = "";
@@ -163,10 +162,26 @@ const sortDeadlineDesc = async (deadline) => {
     } catch (err) { console.log('ini errornya bro => ', err) }
 }
 
+$(window).scroll(function() {
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+        page += 1
+        readData()
+    }
+});
+//scroll pagination done
+
+const deleteForm = new bootstrap.Modal('#deleteData', {
+    keyboard: false
+})
+
+const updateForm = new bootstrap.Modal('#updateData', {
+    keyboard: false
+})
+
 const readData = async () => {
     try {
         const response = await fetch(
-            `http://localhost:3000/api/todos/?executor=${executor}&page=${page}&title=${title}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
+            `http://localhost:3000/api/todos/?executor=${executor}&page=${page}&limit${limit}&title=${title}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
         );
         const todos = await response.json();
         let html = "";
