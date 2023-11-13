@@ -87,7 +87,7 @@ const sortDeadlineAsc = async (deadline) => {
         sortMode = 'asc'
         let sortasc = `
         <div class="btn btn-success" id="btn-deadline" onclick="sortDeadlineDesc('deadline')">
-                            <button id="sortDeadline" type="button" class="btn p-0">
+                            <button type="button" id="sortDeadline" class="btn p-0">
                                 <div  class="d-inline-block position-relative" style="height: 10px;">
                                     <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"
                                         style="color: #ffffff;"></i>
@@ -128,7 +128,7 @@ const sortDeadlineDesc = async (deadline) => {
         sortMode = 'desc'
         let sortdesc = `
         <div class="btn btn-success" id="btn-deadline" onclick="sortDeadlineAsc('deadline')">
-        <button id="sortDeadline" type="button" class="btn p-0">
+        <button type="button" id="sortDeadline" class="btn p-0">
             <div  class="d-inline-block position-relative" style="height: 10px;">
                 <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"
                     style="color: #ffffff;"></i>
@@ -138,7 +138,6 @@ const sortDeadlineDesc = async (deadline) => {
         </button>
         <span class="ms-3 fw-bold">sort by deadline</span>
     </div>
-   
   `
         $(`#btn-${deadline}`).html(sortdesc)
         const response = await fetch(
