@@ -13,10 +13,10 @@ function setId(_id) {
     console.log(`${'id'}`)
 }
 
-//scroll pagination
 
 
 async function find() {
+    page = 1
     title = $("#title").val();
     startdateDeadline = $("#startDate").val();
     enddateDeadline = $("#endDate").val();
@@ -48,6 +48,7 @@ async function find() {
 
 async function findReset() {
     try {
+        page = 1
         title = ''
         $("#title").html('')
         startdateDeadline = ''
@@ -161,8 +162,10 @@ const sortDeadlineDesc = async (deadline) => {
     } catch (err) { console.log('ini errornya bro => ', err) }
 }
 
+//scroll pagination
 $(window).scroll(function() {
-    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+    if ($(document).scrollTop() >= $(document).height() - ($(window).height() + 5))  {
+        console.log("jalan")
         page += 1
         readData()
     }
@@ -190,7 +193,7 @@ const readData = async () => {
         todos.data.forEach((item, index) => {
            return html += `
             <div id="data-show${item._id}" class="data-show ${item.complete == false && new Date().getTime() > new Date(`${item.deadline}`).getTime() ? 'bg-danger-subtle' : item.complete == true ? 'bg-success-subtle' : 'bg-secondary-subtle'}">
-                <span class="form-control border-0 bg-transparent ps-0">${moment(item.deadline).format('DD-MM-YYYY h:mm')} ${item.title}</span>
+                <span class="form-control border-0 bg-transparent ps-0">${moment(item.deadline).format('DD-MM-YYYY HH:mm ')} ${item.title}</span>
                 <button type="button" class="btn p-1" onclick="getData('${item._id}')" data-bs-toggle="modal" data-bs-target="#updateData"><i class="fa-sharp fa-solid fa-pencil"></i></button>&nbsp;
                 <button type="button" class="btn p-1" onclick="setId('${item._id}')" data-bs-toggle="modal" data-bs-target="#deleteData"><i class="fa-solid fa-trash"></i></button>
             </div>
