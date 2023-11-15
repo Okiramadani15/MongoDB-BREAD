@@ -58,11 +58,11 @@ async function findReset() {
     title = "";
     $("#title").html("");
     startdateDeadline = "";
-    $("#startdateDeadline").html("");
+    $("#startDate").val("");
     enddateDeadline = "";
-    $("#enddateDeadline").html("");
+    $("#endDate").val("");
     complete = "";
-    $("#complete").html("");
+    $("#complete-choose").prop('selectedIndex',0);
     const response = await fetch(
       `http://localhost:3000/api/todos/?executor=${executor}&title=${title}&limit${limit}&startdateDeadline=${startdateDeadline}&enddateDeadline=${enddateDeadline}&complete=${complete}&sortBy=${sortBy}&sortMode=${sortMode}`
     );
