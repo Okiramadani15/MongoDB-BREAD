@@ -62,17 +62,8 @@ body {
   border-radius: 5px;
 }
 
-.input-deadline-2 {
-    display: block;
-    width: 100%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
+.sbd{
+  color: #fff;
 }
 
 .deadline-search {
@@ -83,6 +74,9 @@ body {
   flex-direction: row;
   justify-content: space-between;
 }
+.sortDeadline{
+  color: #fff;
+}
 
 .input-deadline {
   width: 75%;
@@ -91,6 +85,19 @@ body {
   flex-direction: row;
   justify-content: space-between;
 }
+.input-deadline-2 {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #ffff;
+  background-color: #ffff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+}
+
 
 .start-end {
   width: 75%;
@@ -118,7 +125,7 @@ body {
 
 .sort-button {
   height: 7px;
-  color: black;
+  color: #ffff;
 }
 
 .button-sort {
@@ -161,6 +168,7 @@ body {
   display: inline-flex;
   flex-direction: column;
   width: 100%;
+  color: #fff;
   justify-content: center;
 }
 

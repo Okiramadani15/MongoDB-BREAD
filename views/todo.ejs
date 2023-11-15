@@ -25,23 +25,21 @@
                             <option disabled selected>-select complete-</option>
                             <option value="false">Not Yet</option>
                             <option value="true">Done</option>
-                            <option value="">Default</option>
-
                         </select>
                     </div>
                     <div class="complete-search">
-                        <div class="btn btn-success" id="btn-deadline" onclick="sortDeadlineAsc('deadline')">
-                            <button id="sortDeadline" type="button" class="btn p-0">
+                        <div class="btn btn-success" id="btn-deadline">
+                            <a id="sortDeadline" class="btn p-0" onclick="sortDeadlineAsc('deadline')">
                                 <div  class="d-inline-block position-relative" style="height: 10px;">
                                     <i class="fa-solid fa-caret-up position-absolute bottom-0 start-0 p-0"
                                         style="color: #ffffff;"></i>
                                     <i class="fa-solid fa-caret-down position-absolute top-0 start-0 p-0"
                                         style="color: #ffffff;"></i>
                                 </div>
-                            </button>
-                            <span class="ms-3 fw-bold">sort by deadline</span>
+                            <span class="ms-3 fw-bold sbd" >sort by deadline</span>
+                            </a>
                         </div>
-                        <div class="input-findreset">
+                         <div class="input-findreset">
                             <button type="button" onclick="findReset()" class="btn btn-warning"><i
                                     class="fa-solid fa-arrows-rotate"></i></button>&nbsp;
                             <button type="button" onclick="find()" class="btn btn-info"><i
