@@ -14,25 +14,20 @@ module.exports = function (db) {
         try {
             const {limit = 5, page = 1, title, complete, startdateDeadline, enddateDeadline, sortBy = '_id', sortMode ='asc', executor } = req.query
             const sort = {}
-            // page = 1
-            // limit = 5
             const params = {}
             sort[sortBy] = sortMode
+            console.log(startdateDeadline,enddateDeadline)
 
 
             if (executor) params['executor'] = executor
             if (title) params['title'] = new RegExp(title, 'i')
             if (complete) params['complete'] = JSON.parse(complete)
             if (startdateDeadline && enddateDeadline) {
-                const end = new Date (enddateDeadline)
-                end.setHours(23,59,59)
-                params['deadline'] = {$gte: new Date(startdateDeadline), $lte: end}
+                params['deadline'] = {$gte: new Date(startdateDeadline), $lte: new Date (enddateDeadline)}
             } else if (startdateDeadline) {
                 params['deadline'] = { $gte: new Date(startdateDeadline) }
             } else if (enddateDeadline) {
-                const end = new Date (enddateDeadline)
-                end.setHours(23,59,59)
-                params['deadline'] = { $lte: end }
+                params['deadline'] = { $lte: new Date (enddateDeadline )}
             }
             
 
