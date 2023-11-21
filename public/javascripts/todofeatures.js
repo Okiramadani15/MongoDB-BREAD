@@ -163,7 +163,6 @@ const sortDeadlineDesc = async (deadline) => {
   }
 };
 
-// sortDeadlineDesc('_id')
 
 //scroll pagination
 $(window).scroll(function () {
